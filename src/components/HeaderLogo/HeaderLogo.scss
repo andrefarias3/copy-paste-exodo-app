@@ -1,0 +1,17 @@
+header {
+    background: #0f1b33;
+    text-align: center;
+    padding: 25px;
+    display: block;
+
+    .logo-container {
+        background: white;
+        display: inline-block;
+        padding: 12px 20px;
+        border-radius: 10px;
+
+        .logo {
+            max-width: 260px
+        }
+    }
+}

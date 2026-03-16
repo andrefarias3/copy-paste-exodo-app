@@ -1,0 +1,29 @@
+.group {
+    background: white;
+    margin: 15px 0;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+
+    h2 {
+        text-align: start;
+    }
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+
+        input {
+            width: 60px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+    }
+}
