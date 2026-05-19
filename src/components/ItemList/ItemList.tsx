@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MainData } from "../../models/types";
 import "./ItemList.scss"
+import { NumericFormat } from 'react-number-format';
 
 interface ItemListProps {
     initialData: MainData
@@ -43,6 +44,31 @@ export default function ItemList({ initialData, onDataChange }: ItemListProps) {
         handleUpdateValue(groupIndex, itemIndex, normalized)
     }
 
+    const handleUpdatePrice = (groupIndex: number, itemIndex: number, price: number) => {
+        const updatedData: MainData = {
+            ...mainData,
+            groups: mainData.groups.map((group, gIdx) =>
+                gIdx === groupIndex
+                    ? {
+                        ...group,
+                        itemList: group.itemList.map((item, iIdx) =>
+                            iIdx === itemIndex ? { ...item, price } : item
+                        )
+                    }
+                    : group)
+        }
+        setMainData(updatedData)
+        onDataChange?.(updatedData)
+    }
+
+    const handleKeyDown = (groupIndex: number, itemIndex: number, key: string, value: number) => {
+        if (key === 'ArrowUp') {
+            handleUpdatePrice(groupIndex, itemIndex, value + 1);
+        } else if (key === 'ArrowDown') {
+            handleUpdatePrice(groupIndex, itemIndex, value - 1);
+        }
+    };
+
     return (
         <div className="list">
             {mainData.groups.map((group, groupIndex) => (
@@ -50,14 +76,28 @@ export default function ItemList({ initialData, onDataChange }: ItemListProps) {
                     <h2>{group.mainLabel}</h2>
                     {group.itemList.map((item, itemIndex) => (
                         <div className="item" key={itemIndex}>
-                            <label>{item.label}</label>
-                            <input
-                                type="number"
-                                value={formatNumberForInput(item.value)}
-                                min={0}
-                                onChange={(e) => handleUpdateValue(groupIndex, itemIndex, normalizeNumberInput(e.target.value))}
-                                onBlur={(e) => handleBlurValue(groupIndex, itemIndex, e.target.value)}
-                            />
+                            <label key={`label-${groupIndex}-${itemIndex}`}>{item.label}</label>
+                            <div className="priceContainer">
+                                <NumericFormat key={`price-${groupIndex}-${itemIndex}`}
+                                    value={item.price}
+                                    onValueChange={(values) => handleUpdatePrice(groupIndex, itemIndex, values.floatValue || 0)}
+                                    className="input-value"
+                                    thousandSeparator="."
+                                    decimalSeparator=","
+                                    decimalScale={2}
+                                    fixedDecimalScale={true}
+                                    onKeyDown={(ev) => handleKeyDown(groupIndex, itemIndex, ev.key, item.price)}
+                                    prefix={'R$ '}
+                                />
+                                x
+                                <input key={`value-${groupIndex}-${itemIndex}`}
+                                    type="number"
+                                    value={formatNumberForInput(item.value)}
+                                    min={0}
+                                    onChange={(e) => handleUpdateValue(groupIndex, itemIndex, normalizeNumberInput(e.target.value))}
+                                    onBlur={(e) => handleBlurValue(groupIndex, itemIndex, e.target.value)}
+                                />
+                            </div>
                         </div>
                     ))}
                 </div>

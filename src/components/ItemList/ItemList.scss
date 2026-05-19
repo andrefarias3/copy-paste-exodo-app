@@ -15,10 +15,20 @@
         padding: 8px 0;
         border-bottom: 1px solid #eee;
 
-        input {
-            width: 60px;
-            font-size: 16px;
-            text-align: center;
+        .priceContainer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            input {
+                width: 60px;
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .input-value {
+                width: 120px;
+            }
         }
 
         &:last-child {

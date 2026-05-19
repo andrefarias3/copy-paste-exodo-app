@@ -16,6 +16,22 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
         group.itemList.every(item => item.value === 0)
     )
 
+    const formatter = new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+
+    const totalSum = () => {
+        let rawSum = mainData.groups.reduce((sum, group) =>
+            sum + group.itemList.reduce((itemSum, item) =>
+                itemSum + item.price * item.value, 0), 0);
+        return formatter.format(rawSum);
+    }
+
+    const totalValues = mainData.groups.reduce((sum, group) =>
+        sum + group.itemList.reduce((itemSum, item) =>
+            itemSum + item.value, 0), 0)
+
     const getMessageBody = () => {
         let message = `Lista de Pedidos:\n`
 
@@ -26,13 +42,15 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
 
                 group.itemList.forEach(item => {
                     if (item.value !== 0) {
-                        message += `  ${item.label}: ${item.value}\n`
+                        message += `  ${item.label}: ${item.value} x R$ ${item.price.toFixed(2)}\n`
                     }
                 })
 
                 message += " "
             }
         })
+
+        message += `Valor Total: R$ ${totalSum()}`
 
         return message
     }
@@ -46,12 +64,15 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
                 group.itemList.forEach(item => {
 
                     if (item.value !== 0) {
-                        body.push([item.label, item.value])
+                        body.push([item.label, item.value, `R$ ${item.price.toFixed(2)}`])
                     }
                 })
             }
 
         })
+
+        body.push(["Total:", totalValues, `R$ ${totalSum()}`])
+
         return body
     }
 
@@ -89,11 +110,11 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
 
         autoTable(doc, {
             startY: 40,
-            head: [["Item", "Quantidade"]],
+            head: [["Item", "Quantidade", "Preço"]],
             body: getTableBody(),
             didParseCell: (data) => {
                 const rowData = data.row.raw as (string | number)[]
-                if (rowData.length === 1 || rowData[1] === undefined || rowData[1] === "") {
+                if (rowData.length === 1 || rowData[1] === undefined || rowData[1] === "" || rowData.lastIndexOf("Total:") !== -1) {
                     data.cell.styles.fontStyle = "bolditalic"
                     data.cell.styles.textColor = [0, 0, 139]
                 }
@@ -116,10 +137,17 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
     }
 
     return (
-        <div className="buttons">
-            <button className="whatsapp" onClick={sendWhatsapp} disabled={allValuesAreZero}>Enviar WhatsApp</button>
-            <button className="copy" onClick={copyData} disabled={allValuesAreZero}>Copiar Pedido</button>
-            <button className="print" onClick={generatePDF} disabled={allValuesAreZero}>Gerar PDF</button>
-        </div>
+        <>
+            {!allValuesAreZero &&
+                <div className="finalSum">
+                    <span>Valor Total: R$ {totalSum()}</span>
+                </div>
+            }
+            <div className="buttons">
+                <button className="whatsapp" onClick={sendWhatsapp} disabled={allValuesAreZero}>Enviar WhatsApp</button>
+                <button className="copy" onClick={copyData} disabled={allValuesAreZero}>Copiar Pedido</button>
+                <button className="print" onClick={generatePDF} disabled={allValuesAreZero}>Gerar PDF</button>
+            </div>
+        </>
     )
 }

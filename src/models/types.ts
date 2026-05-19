@@ -9,5 +9,6 @@ export interface MainGroup {
 
 export interface Item {
     label: string,
+    price: number,
     value: number
 };

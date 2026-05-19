@@ -1,32 +1,40 @@
-.buttons {
+ .finalSum {
+     font-weight: bold;
+     background: white;
+     margin: 10px 0;
+     border-radius: 10px;
+     padding: 16px;
+     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+ }
 
-    button {
-        width: 100%;
-        padding: 16px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        margin-top: 10px;
-        cursor: pointer;
+ .buttons {
+     button {
+         width: 100%;
+         padding: 16px;
+         font-size: 18px;
+         border: none;
+         border-radius: 10px;
+         margin-top: 10px;
+         cursor: pointer;
 
-        &:disabled {
-            pointer-events: none;
-            opacity: 0.5;
-        }
-    }
+         &:disabled {
+             pointer-events: none;
+             opacity: 0.5;
+         }
+     }
 
-    .whatsapp {
-        background: #25D366;
-        color: white;
-    }
+     .whatsapp {
+         background: #25D366;
+         color: white;
+     }
 
-    .copy {
-        background: #2d3748;
-        color: white;
-    }
+     .copy {
+         background: #2d3748;
+         color: white;
+     }
 
-    .print {
-        background: #2563eb;
-        color: white;
-    }
-}
+     .print {
+         background: #2563eb;
+         color: white;
+     }
+ }
