@@ -60,8 +60,8 @@ export default function App() {
     ],
   })
 
-  const phone = "554884312040"
-  
+  const phone = "5547992050806"
+
   return (
     <>
       <HeaderLogo />
