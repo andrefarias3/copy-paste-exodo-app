@@ -33,7 +33,8 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
             itemSum + item.value, 0), 0)
 
     const getMessageBody = () => {
-        let message = `Lista de Pedidos:\n`
+        let message = `\n${mainData.clientName}\n`
+        message += `Lista de Pedidos:\n`
 
         mainData.groups.forEach(group => {
             if (group.itemList.some(item => item.value > 0)) {
@@ -108,8 +109,11 @@ export default function ActionButtons({ mainData, phone }: ActionButtonsProps) {
 
         doc.addImage(imgLeft, "PNG", 15, 10, imageWidth, 25)
 
+        doc.setFontSize(16)
+        doc.text("Cliente: " + mainData.clientName, pageWidth / 2, 45, { align: "center" })
+
         autoTable(doc, {
-            startY: 40,
+            startY: 50,
             head: [["Item", "Quantidade", "Preço"]],
             body: getTableBody(),
             didParseCell: (data) => {

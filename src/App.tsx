@@ -9,6 +9,7 @@ import { MainData } from "./models/types"
 
 export default function App() {
   const [mainData, setMainData] = useState<MainData>({
+    clientName: "",
     groups: [
       {
         mainLabel: "Tinta Uso Geral",
@@ -60,6 +61,7 @@ export default function App() {
   })
 
   const phone = "554884312040"
+  
   return (
     <>
       <HeaderLogo />

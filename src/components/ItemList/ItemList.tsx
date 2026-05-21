@@ -61,6 +61,15 @@ export default function ItemList({ initialData, onDataChange }: ItemListProps) {
         onDataChange?.(updatedData)
     }
 
+    const handleUpdateCliente = (clientName: string) => {
+        const updatedData: MainData = {
+            ...mainData,
+            clientName: clientName
+        }
+        setMainData(updatedData)
+        onDataChange?.(updatedData)
+    }
+
     const handleKeyDown = (groupIndex: number, itemIndex: number, key: string, value: number) => {
         if (key === 'ArrowUp') {
             handleUpdatePrice(groupIndex, itemIndex, value + 1);
@@ -71,6 +80,13 @@ export default function ItemList({ initialData, onDataChange }: ItemListProps) {
 
     return (
         <div className="list">
+            <div className="group">
+                <span>Cliente </span>
+                <input type="text"
+                    value={mainData.clientName}
+                    onChange={(e) => handleUpdateCliente(e.target.value)}
+                />
+            </div>
             {mainData.groups.map((group, groupIndex) => (
                 <div className="group" key={groupIndex}>
                     <h2>{group.mainLabel}</h2>

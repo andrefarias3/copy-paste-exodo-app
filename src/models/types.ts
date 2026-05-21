@@ -1,4 +1,5 @@
 export interface MainData {
+    clientName: string,
     groups: MainGroup[]
 };
 
